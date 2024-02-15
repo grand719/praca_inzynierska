@@ -1,0 +1,7 @@
+node_modules/
+babel.config.js
+metro.config.js
+package-lock.json
+yarn.lock
+.ts-build
+.eslintrc.cjs

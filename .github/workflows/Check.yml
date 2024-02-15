@@ -1,0 +1,52 @@
+name: Check pipeline
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    types: [opened, edited]
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print project info
+        run: echo "Kajaki app pipeline"
+  lintCheck:
+    needs: [info]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Install dependencies  
+        run: yarn
+      - name: Lint check
+        run: npm run lint
+      - name: Uninstall Yarn
+        if: always()
+        run: npm uninstall -g yarn
+
+  tsCheck:
+    needs: [info]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Install dependencies  
+        run: yarn
+      - name: TypeScript check
+        run: yarn compile-ts
+      - name: Uninstall Yarn
+        if: always()
+        run: npm uninstall -g yarn
